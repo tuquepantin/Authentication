@@ -4,15 +4,36 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
+from werkzeug.security import generate_password_hash, check_password_hash
 
 api = Blueprint('api', __name__)
 
+def set_password(password, salt):
+    return generate_password_hash(f"{password}{salt}")
+
+def check_password(password_hash, password, salt):
+    return check_password_hash(password_hash, f"{password}{salt}")
+
 
 @api.route('/user', methods=['POST'])
-def handle_user():
+def add_user():
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
+    if request.method == "POST":
+        body = request.json
+        email= body.get('email', None)
+        password= body.get('password', None)
 
-    return jsonify(response_body), 200
+        if email is None or password is None:
+            return jsonify({"msg": "porfavor rellenar datos"}), 400
+        
+        else:
+            salt= 1
+            user= User(email=email, password=password, salt=salt)
+            db.session.add(user)
+            try:
+                db.session.commit()
+                return jsonify({"msg": "user created"}), 201
+            except Exception as err:
+                print(err.args)
+                db.session.rollback()
+                return jsonify({"msg": f"{err.args}"}), 500
