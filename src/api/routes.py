@@ -46,14 +46,11 @@ def add_user():
 
 @api.route("/user", methods=["GET"])
 @jwt_required()
-def get_all_users():
-    if request.method == "GET":
-        user = User.query.get(get_jwt_identity())
-        if user.email == "deimianvasquez@gmail.com":
-            all_user = User.query.all()
-            return jsonify(list(map(lambda item: item.serialize(), all_user)))
-        else:
-            return jsonify("no autorizado"), 401
+def get_user_data():
+
+    user_id= get_jwt_identity()
+    user= User.query.get(user_id)
+    return jsonify({"user": user.serialize()}), 200
 
 
 @api.route("/login", methods=["POST"])
