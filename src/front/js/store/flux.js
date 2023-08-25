@@ -69,6 +69,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 			console.log(error);
 		  }
 		},
+		getRegister: async (data) => {
+			let store = getStore();
+	
+			try {
+			  let response = await fetch(`${process.env.BACKEND_URL}/user`, {
+				method: "POST",
+				headers: {
+				  "Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			  });
+			  let responseData = await response.json();
+			  setStore({
+				token: responseData.token,
+			  });
+			  localStorage.setItem("token", responseData.token);
+			} catch (error) {
+			  console.log(error);
+			}
+		  },
 	  },
 	};
   };

@@ -6,36 +6,62 @@ import { Context } from "../store/appContext";
 export const Demo = () => {
 	const { store, actions } = useContext(Context);
 
+	const [register, setRegister] = useState({
+		email: "",
+		password: "",
+	});
+
+	const handleChange = ({ target }) => {
+		setRegister({
+			...register,
+			[target.name]: target.value,
+		});
+	};
+
+	const sendRegister = (data) => {
+		console.log(data);
+		actions.getRegister(data);
+	};
+
 	return (
 		<div className="container">
-			<ul className="list-group">
-				{store.demo.map((item, index) => {
-					return (
-						<li
-							key={index}
-							className="list-group-item d-flex justify-content-between"
-							style={{ background: item.background }}>
-							<Link to={"/single/" + index}>
-								<span>Link to: {item.title}</span>
-							</Link>
-							{// Conditional render example
-							// Check to see if the background is orange, if so, display the message
-							item.background === "orange" ? (
-								<p style={{ color: item.initial }}>
-									Check store/flux.js scroll to the actions to see the code
-								</p>
-							) : null}
-							<button className="btn btn-success" onClick={() => actions.changeColor(index, "orange")}>
-								Change Color
+			<div className="text-center mt-5">
+				
+			</div>
+			<div className="row justify-content-center">
+				<div className="card p-3" style={{ width: "25rem" }}>
+					<h1>Register</h1>
+					<form>
+						<div className="form-group">
+							<input
+								className="form-control"
+								placeholder="email"
+								type="text"
+								onChange={handleChange}
+								name="email"
+							/>
+						</div>
+						<div className="form-group">
+							<input
+								className="form-control"
+								placeholder="password"
+								type="password"
+								onChange={handleChange}
+								name="password"
+							/>
+						</div>
+						<div className="form-group">
+							<button
+								className="btn btn-primary"
+								type="button"
+								onClick={() => sendRegister(register)}
+							>
+								register 
 							</button>
-						</li>
-					);
-				})}
-			</ul>
-			<br />
-			<Link to="/">
-				<button className="btn btn-primary">Back home</button>
-			</Link>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 	);
 };
