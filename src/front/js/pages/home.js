@@ -26,7 +26,7 @@ export const Home = () => {
 	return (
 		<div className="container">
 			<div className="text-center mt-5">
-				{store.token ? <h1>MENSAJE SECRETO</h1> : <h1>no registrado</h1>}
+				{store.token ? <h1>Felicidades eres nuetro visitante numero 99999</h1> : <h1>logeate para una sorpresa</h1>}
 			</div>
 			<div className="row justify-content-center">
 				<div className="card p-3" style={{ width: "25rem" }}>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const Demo = () => {
@@ -22,6 +21,7 @@ export const Demo = () => {
 		console.log(data);
 		actions.getRegister(data);
 	};
+
 
 	return (
 		<div className="container">
